@@ -1,24 +1,36 @@
 package com.micoenterprise.talentmanagement.controller;
 
+import com.micoenterprise.talentmanagement.dao.UserDao;
+import com.micoenterprise.talentmanagement.pojo.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 
 @Controller
 public class LoginController {
-    @GetMapping("/login")
+
+    @Resource
+    UserDao userDao;
+
+    @GetMapping("/loginPage")
     public String login() {
         return "login";
     }
 
     @PostMapping("/login")
-    public String login(HttpServletRequest request){
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        System.out.println(email);
-        return "redirect:/";
+    @ResponseBody
+    public String login(String username, String password){
+        User user = null;
+        user = userDao.getUserByUsernameAndPassword(username, password);
+        if(user != null){
+            System.out.println(user);
+            return "登陆成功";
+        }else{
+            return "登陆失败";
+        }
     }
 }

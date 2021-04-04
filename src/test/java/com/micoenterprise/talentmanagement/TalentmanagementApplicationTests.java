@@ -1,5 +1,7 @@
 package com.micoenterprise.talentmanagement;
 
+import com.micoenterprise.talentmanagement.dao.UserDao;
+import com.micoenterprise.talentmanagement.pojo.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,13 +15,14 @@ class TalentmanagementApplicationTests {
     @Autowired
     DataSource dataSource;
 
+    @Autowired
+    UserDao userDao;
+
+    User user = new User("1", "2", 3);
+
     @Test
     void contextLoads() {
-        try {
-            System.out.println(dataSource.getConnection());
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        System.out.println(userDao.getUserByUsernameAndPassword("admin", "123"));
     }
 
 }
